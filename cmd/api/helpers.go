@@ -5,7 +5,9 @@ import (
 	"net/http"
 )
 
-func (app *application) writeJSON(w http.ResponseWriter, status int, data any, header http.Header) error {
+type envelope map[string]any
+
+func (app *application) writeJSON(w http.ResponseWriter, status int, data *envelope, header http.Header) error {
 	js, err := json.Marshal(data)
 	if err != nil {
 		return err
