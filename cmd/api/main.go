@@ -36,10 +36,10 @@ func main() {
 	}
 
 	server := &http.Server{
-		Addr:        fmt.Sprintf(":%d", cfg.port),
-		Handler:     app.routes(),
-		IdleTimeout: time.Minute,
-		ReadTimeout: 5 * time.Second,
+		Addr:         fmt.Sprintf(":%d", cfg.port),
+		Handler:      app.routes(),
+		IdleTimeout:  time.Minute,
+		ReadTimeout:  5 * time.Second,
 		WriteTimeout: 10 * time.Second,
 		ErrorLog:     slog.NewLogLogger(logger.Handler(), slog.LevelError),
 	}
