@@ -5,7 +5,10 @@ import (
 	"errors"
 )
 
-var ErrNoRecord = errors.New("models: no matching record found")
+var (
+	ErrNoRecord     = errors.New("models: no matching record found")
+	ErrEditConflict = errors.New("models: edit conflict when updating record")
+)
 
 type Models struct {
 	Movies *MovieModel
