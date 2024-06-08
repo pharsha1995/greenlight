@@ -22,7 +22,7 @@ type Movie struct {
 }
 
 func ValidateMovie(v *validator.Validator, m *Movie) {
-	v.Check(validator.ValidString(m.Title, 500), "title", "must not be empty and less than 500 bytes")
+	v.Check(validator.ValidString(m.Title, 1, 500), "title", "must not be empty and less than 500 bytes")
 	v.Check(validator.WithinRange(m.Year, 1888, int32(time.Now().Year())), "year", "must be between 1888 and current year")
 	v.Check(m.Runtime > 0, "runtime", "must be a positive integer")
 	v.Check(m.Genres != nil, "genres", "must be provided")

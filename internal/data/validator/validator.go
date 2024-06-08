@@ -46,7 +46,7 @@ func Unique[T comparable](values []T) bool {
 
 	for _, v := range values {
 
-		if v, ok := any(v).(string); ok && !ValidString(v, 500) {
+		if v, ok := any(v).(string); ok && !ValidString(v, 1, 500) {
 			return false
 		}
 
@@ -60,6 +60,7 @@ func WithinRange[T cmp.Ordered](v, low, high T) bool {
 	return low <= v && v <= high
 }
 
-func ValidString(s string, maxBytes int) bool {
-	return strings.TrimSpace(s) != "" && len(s) <= maxBytes
+func ValidString(s string, minBytes, maxBytes int) bool {
+	s = strings.TrimSpace(s)
+	return s != "" && len(s) >= minBytes && len(s) <= maxBytes
 }
