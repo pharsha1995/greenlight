@@ -11,8 +11,11 @@ import (
 	"golang.org/x/crypto/bcrypt"
 )
 
-var ErrDuplicateEmail = errors.New("users: duplicate email")
-var emailUniquePQErrMsg = `pq: duplicate key value violates unique constraint "users_email_key"`
+var (
+	ErrDuplicateEmail   = errors.New("users: duplicate email")
+	emailUniquePQErrMsg = `pq: duplicate key value violates unique constraint "users_email_key"`
+	AnonymousUser       = &User{}
+)
 
 type password struct {
 	plaintext *string
@@ -51,6 +54,10 @@ type User struct {
 	Password  password  `json:"-"`
 	Activated bool      `json:"activated"`
 	Version   int       `json:"-"`
+}
+
+func (u *User) IsAnonymous() bool {
+	return u == AnonymousUser
 }
 
 func ValidateEmail(v *validator.Validator, email string) {
