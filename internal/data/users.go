@@ -53,13 +53,21 @@ type User struct {
 	Version   int       `json:"-"`
 }
 
+func ValidateEmail(v *validator.Validator, email string) {
+	v.Check(validator.ValidString(email, 1, 500), "email", "must not be empty and less than 500 bytes")
+	v.Check(validator.Matches(email, validator.EmailRX), "email", "must be a valid email address")
+}
+
+func ValidatePasswordPlaintext(v *validator.Validator, password string) {
+	v.Check(validator.ValidString(password, 8, 72), "password", "must not be empty and between 8 and 72 bytes")
+}
+
 func ValidateUser(v *validator.Validator, user *User) {
 	v.Check(validator.ValidString(user.Name, 1, 500), "name", "must not be empty and less than 500 bytes")
-	v.Check(validator.ValidString(user.Email, 1, 500), "email", "must not be empty and less than 500 bytes")
-	v.Check(validator.Matches(user.Email, validator.EmailRX), "email", "must be a valid email address")
+	ValidateEmail(v, user.Email)
 
 	if user.Password.plaintext != nil {
-		v.Check(validator.ValidString(*user.Password.plaintext, 8, 72), "password", "must not be empty and between 8 and 72 bytes")
+		ValidatePasswordPlaintext(v, *user.Password.plaintext)
 	}
 
 	if user.Password.hash == nil {
